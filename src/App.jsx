@@ -1,25 +1,31 @@
+import data from "./data";
 import { useState } from "react";
-import DoneTask from "./donetask";
-import UndoneTask from "./undotask";
-import { FaPen } from "react-icons/fa";
+import "./App.css";
+import Todos from "./components/Todos";
 
+function App() {
 
-function ToDo() {
-  // "usesState" tao va luu mot bien moi State, bien se dc thay doi thong qua "setState" .  (homework,homework{ok, not})
-  const [toDoText, setToDoText] = useState("");
-  const [todoList, setTodoList] = useState([]);
+  const [task, setTask] = useState("");
+  const [todos, setTodos] = useState(data);
   const [popUp, setPopUp] = useState(false);
-  console.log(todoList);
-
+  const handleChange = (e) => {
+    setTask(e.target.value);
+  };
+  const handleClick = () => {
+    setTodos((prev) => [...prev,{task:task}]);
+  };
+  console.log(task);
   return (
-    <div className="flex gap-4 flex-col w-full ">
+    <div className="flex-col gap-4 flex justify-center items-center h-screen max-w-2xl m-auto">
+      <h2 className="text-xl tex">TO DO APP</h2>
       <div className="flex gap-3 w-full justify-center content-center items-center">
         <input
           className="border rounded-lg p-4 w-full"
           type="text"
-          placeholder="search TODO" 
+          placeholder="search TODO"
+          
         />
-        
+
         <button
           className="border rounded-lg w-32 h-12 bg-green-700 text-white font-medium"
           onClick={() => {
@@ -28,21 +34,14 @@ function ToDo() {
         >
           ADD TODO
         </button>
-      </div>
-      {/* <DoneTask dataToDo={todoList} /> */}
-      <UndoneTask dataToDo={todoList}  />
-
-      {/* popup */}
-      <div
+        <div
         className={` gap-4 flex-col justify-between w-full max-w-md fixed border rounded-xl centered ${
           popUp ? "flex" : "hidden"
         }`}
       >
         <input
-          value={toDoText}
-          onChange={(e) => {
-            setToDoText(e.target.value);
-          }}
+        value={task}
+          onChange={handleChange}
           className="border rounded-lg p-3 "
           type="text"
           placeholder="ADD TODO"
@@ -50,10 +49,7 @@ function ToDo() {
         <div className="flex gap-2 justify-end">
           <button
             className="border rounded-lg px-4 py-2  bg-green-700 text-white font-medium"
-            onClick={() => {
-              setPopUp(false);
-              setTodoList([...todoList, {name:toDoText, status:false}]);
-            }}
+            onClick={handleClick}
           >
             ADD
           </button>
@@ -68,10 +64,10 @@ function ToDo() {
         </div>
         
       </div>
-      
-      {/*  */}
+      </div>
+      <Todos todo={todos} setTodos = {setTodos}  />
     </div>
-    
   );
 }
-export default ToDo;
+
+export default App;
